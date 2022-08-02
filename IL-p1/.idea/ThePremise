@@ -1,0 +1,26 @@
+The premise of the code is that the java program will recieve input from html webpage
+
+
+
+java will accept log in infor and check with database before returning t/f.
+
+
+**SUCCESSFUL LOGIN
+
+html will update to request page
+
+html will send requests to java, java interprits and sends to database
+
+java tells html to move to Admin page or User page depending on whether isAdmin is true or not.
+
+
+**SUCCESSFUL REQ
+
+java will tell html to update displayed list of req.
+
+
+**FAILED LOGIN
+java return f on login check
+
+html prompt to try again or create account
+
