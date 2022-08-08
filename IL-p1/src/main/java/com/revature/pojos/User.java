@@ -11,6 +11,7 @@ public class User {
 
     private boolean isAdmin;
 
+
     public User( String firstName, String lastName, String email, String password, boolean isAdmin) {
         this.userId = null;
         this.firstName = firstName;
@@ -18,7 +19,10 @@ public class User {
         this.email = email;
         this.password = password;
         this.isAdmin = isAdmin;
+
     }
+
+
 
     public User() {
     }

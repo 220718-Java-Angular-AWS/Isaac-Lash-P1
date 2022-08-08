@@ -10,6 +10,8 @@ public class Requests {
     private double amount;
     private boolean approved;
 
+    private String date;
+
     public Requests() {
     }
 
@@ -20,6 +22,15 @@ public class Requests {
         this.reason = reason;
         this.amount = amount;
         this.approved = approved;
+        this.date = "";
+    }
+
+    public String getDate() {
+        return date;
+    }
+
+    public void setDate(String date) {
+        this.date = date;
     }
 
     public Integer getReqId() {

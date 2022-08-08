@@ -19,7 +19,7 @@ public class UserDAOS implements DAOScrud<User> {
     @Override
     public void create(User user) {
         try {
-            String sql = "INSERT INTO user_table (first_name, last_name,  email_add, use_pass) VALUES (?, ?, ?, ?)";
+            String sql = "INSERT INTO user_table (first_name, last_name,  email_add, use_pass) VALUES (?, ?, ?, ?);";
             PreparedStatement pstmt = connection.prepareStatement(sql);
             pstmt.setString(1, user.getFirstName());
             pstmt.setString(2, user.getLastName());
@@ -30,15 +30,41 @@ public class UserDAOS implements DAOScrud<User> {
 
 
         } catch (SQLException e) {
+
             e.printStackTrace();
         }
     }
+    public User logIn(String email, String password){
+        User user = new User();
+        try{
+            String sql = "SELECT * FROM user_table WHERE email_add = ? AND use_pass = ?";
+            PreparedStatement pmt = connection.prepareStatement(sql);
+            pmt.setString(1,email);
+            pmt.setString(2,password);
+            ResultSet results = pmt.executeQuery();
 
+            if(results.next()) {
+                user.setUserId(results.getInt("user_id"));
+                user.setFirstName(results.getString("first_name"));
+                user.setLastName(results.getString("last_name"));
+                user.setEmail(results.getString("email_add"));
+                user.setPassword(results.getString("use_pass"));
+                user.setAdmin(results.getBoolean("is_Admin"));
+
+            }
+
+
+
+
+        }catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
     @Override
     public User read(int uid) {
         User user = new User();
         try {
-            String sql = "SELECT * FROM users WHERE user_id = ?";
+            String sql = "SELECT * FROM user_table WHERE user_id = ?";
             PreparedStatement pstmt = connection.prepareStatement(sql);
             pstmt.setInt(1,uid );
             ResultSet results = pstmt.executeQuery();
@@ -48,9 +74,10 @@ public class UserDAOS implements DAOScrud<User> {
                 user.setUserId(results.getInt("user_id"));
                 user.setFirstName(results.getString("first_name"));
                 user.setLastName(results.getString("last_name"));
-                user.setEmail(results.getString("email"));
-                user.setPassword(results.getString("password"));
+                user.setEmail(results.getString("email_add"));
+                user.setPassword(results.getString("use_pass"));
                 user.setAdmin(results.getBoolean("is_Admin"));
+
             }
 
         } catch (SQLException e) {
@@ -65,7 +92,7 @@ public class UserDAOS implements DAOScrud<User> {
     public List<User> readAll() {
         List<User> userList = new LinkedList<>();
         try {
-            String sql = "SELECT * FROM users";
+            String sql = "SELECT * FROM user_table";
             PreparedStatement pstmt = connection.prepareStatement(sql);
             ResultSet results = pstmt.executeQuery();
 
@@ -76,9 +103,10 @@ public class UserDAOS implements DAOScrud<User> {
                 user.setUserId(results.getInt("user_id"));
                 user.setFirstName(results.getString("first_name"));
                 user.setLastName(results.getString("last_name"));
-                user.setEmail(results.getString("email"));
-                user.setPassword(results.getString("password"));
-                user.setAdmin(results.getBoolean("isAdmin"));
+                user.setEmail(results.getString("email_add"));
+                user.setPassword(results.getString("use_pass"));
+                user.setAdmin(results.getBoolean("is_Admin"));
+
                 userList.add(user);
             }
 
@@ -94,7 +122,7 @@ public class UserDAOS implements DAOScrud<User> {
     public void update(User user) {
 
         try {
-            String sql = "UPDATE users SET first_name = ?, last_name = ?, email = ?, password = ?, isAdmin = ?, WHERE user_id = ?";
+            String sql = "UPDATE user_table SET first_name = ?, last_name = ?, email_add = ?, use_pass = ?, is_Admin = ?, WHERE user_id = ?";
             PreparedStatement pstmt = connection.prepareStatement(sql);
             pstmt.setString(1, user.getFirstName());
             pstmt.setString(2, user.getLastName());
