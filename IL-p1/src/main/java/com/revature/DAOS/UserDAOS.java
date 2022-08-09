@@ -59,6 +59,7 @@ public class UserDAOS implements DAOScrud<User> {
         }catch (SQLException e) {
             e.printStackTrace();
         }
+        return user;
     }
     @Override
     public User read(int uid) {
