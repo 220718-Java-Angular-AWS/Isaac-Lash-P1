@@ -7,36 +7,29 @@
         version="2.5">
 
     <listener>
-        <listener-class>servlets.DependencyLoaderListener</listener-class>
+        <listener-class>com.revature.servlets.DependencyLoaderListener</listener-class>
     </listener>
 
     <servlet>
-        <servlet-name>RequestServlet</servlet-name>
-        <servlet-class>servlets.RequestServlet</servlet-class>
+        <servlet-name>requestServlet</servlet-name>
+        <servlet-class>com.revature.servlets.RequestServlet</servlet-class>
     </servlet>
 
     <servlet-mapping>
-        <servlet-name>RequestServlet</servlet-name>
+        <servlet-name>requestServlet</servlet-name>
         <url-pattern>/request</url-pattern>
     </servlet-mapping>
 
     <servlet>
-        <servlet-name>UserServlet</servlet-name>
-        <servlet-class>servlets.UserServlet</servlet-class>
+        <servlet-name>userServlet</servlet-name>
+        <servlet-class>com.revature.servlets.UserServlet</servlet-class>
     </servlet>
 
     <servlet-mapping>
-        <servlet-name>UserServlet</servlet-name>
+        <servlet-name>userServlet</servlet-name>
         <url-pattern>/user</url-pattern>
     </servlet-mapping>
 
-    <servlet>
-        <servlet-name>DependencyLoaderListener</servlet-name>
-        <servlet-class>servlets.DependencyLoaderListener</servlet-class>
-    </servlet>
 
-    <servlet-mapping>
-        <servlet-name>DependencyLoaderListener</servlet-name>
-        <url-pattern>/dpl</url-pattern>
-    </servlet-mapping>
+
 </web-app>

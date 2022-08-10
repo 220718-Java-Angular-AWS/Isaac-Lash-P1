@@ -6,15 +6,16 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.LinkedList;
 import java.util.List;
+import com.revature.Services.DatasourceService;
 
 public class UserDAOS implements DAOScrud<User> {
 
     Connection connection; //set the connection for this class to use
 
-    public UserDAOS(Connection connection) {
-        this.connection = connection;
-    }
 
+    public UserDAOS(){
+        this.connection = DatasourceService.getConnection() ;
+    }
 
     @Override
     public void create(User user) {
@@ -94,9 +95,11 @@ public class UserDAOS implements DAOScrud<User> {
         List<User> userList = new LinkedList<>();
         try {
             String sql = "SELECT * FROM user_table";
+            System.out.println("made it first");
             PreparedStatement pstmt = connection.prepareStatement(sql);
-            ResultSet results = pstmt.executeQuery();
 
+            ResultSet results = pstmt.executeQuery();
+            System.out.println("made it");
 
 
             while(results.next()) {
@@ -142,11 +145,11 @@ public class UserDAOS implements DAOScrud<User> {
     }
 
     @Override
-    public void delete(User user) {
+    public void delete(int id) {
         try{
             String sql = "DELETE FROM user_table WHERE user_id = ?";
             PreparedStatement pstmt = connection.prepareStatement(sql);
-            pstmt.setInt(1, user.getUserId());
+            pstmt.setInt(1, id);
 
             pstmt.executeUpdate();
 

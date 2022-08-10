@@ -1,4 +1,5 @@
 package com.revature.DAOS;
+import com.revature.Services.DatasourceService;
 import com.revature.pojos.Requests;
 import com.revature.pojos.User;
 
@@ -16,7 +17,9 @@ import java.util.List;
 public class RequestDAOS implements DAOScrud<Requests> {
 
     Connection connection; //set the connection for this class to use
-
+    public RequestDAOS() {
+        this.connection = DatasourceService.getConnection();
+    }
     public RequestDAOS(Connection connection) {
         this.connection = connection;
     }
@@ -116,12 +119,12 @@ public class RequestDAOS implements DAOScrud<Requests> {
     }
 
     @Override
-    public void delete(Requests requests) {
+    public void delete(int reqID) {
 
         try{
             String sql = "DELETE FROM reimburse_req WHERE req_id = ?";
             PreparedStatement pstmt = connection.prepareStatement(sql);
-            pstmt.setInt(1, requests.getReqId());
+            pstmt.setInt(1, reqID);
 
             pstmt.executeUpdate();
 

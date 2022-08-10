@@ -12,6 +12,6 @@ public interface DAOScrud<L> {
 
     void update(L l);
 
-    void delete(L l);
+    void delete(int id);
 
 }
