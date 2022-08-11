@@ -4,10 +4,7 @@ import javax.servlet.http.HttpServlet;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.revature.pojos.User;
 import com.revature.Services.UserService;
-
-
 import javax.servlet.ServletException;
-
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.BufferedReader;
@@ -35,17 +32,24 @@ public class UserServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         String param = req.getParameter("user-id");
-
-        if(param == null) {
+        String email = req.getParameter("email");
+        String password = req.getParameter("passw");
+        if(param == null && email == null && password ==null) {
             //Return all
             List<User> userList = service.getAllUsers();
             String json = mapper.writeValueAsString(userList);
             resp.getWriter().println(json);
-        } else {
+        } else if (param != null){
             //return the one the request wants
             Integer userId = Integer.parseInt(req.getParameter("user-id"));
 
             User user = service.getUser(userId);
+            String json = mapper.writeValueAsString(user);
+            resp.getWriter().println(json);
+        }else {
+        //get user with credintials
+
+            User user = service.checkUser(email, password);
             String json = mapper.writeValueAsString(user);
             resp.getWriter().println(json);
         }

@@ -22,6 +22,10 @@ public class UserService  {
         return dao.read(id);
     }
 
+    public User checkUser(String email, String password) {
+        return dao.logIn(email, password);
+    }
+
     public List<User> getAllUsers() {
         return dao.readAll();
     }

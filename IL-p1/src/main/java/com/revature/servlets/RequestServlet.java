@@ -4,8 +4,6 @@ package com.revature.servlets;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.revature.Services.RequestService;
 import com.revature.pojos.Requests;
-import com.revature.pojos.User;
-
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;

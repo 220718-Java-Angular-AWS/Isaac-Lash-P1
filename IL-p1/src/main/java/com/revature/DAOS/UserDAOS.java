@@ -63,6 +63,34 @@ public class UserDAOS implements DAOScrud<User> {
         return user;
 
     }
+    public User logIn(String email, String password) {
+        User user = new User();
+        try {
+            System.out.println("loggin in");
+            String sql = "SELECT * FROM user_table WHERE email_add = ? AND use_pass = ?";
+            PreparedStatement pstmt = connection.prepareStatement(sql);
+            pstmt.setString(1,email);
+            pstmt.setString(2,password);
+            ResultSet results = pstmt.executeQuery();
+
+
+            if(results.next()) {
+                user.setUserId(results.getInt("user_id"));
+                user.setFirstName(results.getString("first_name"));
+                user.setLastName(results.getString("last_name"));
+                user.setEmail(results.getString("email_add"));
+                user.setPassword(results.getString("use_pass"));
+                user.setAdmin(results.getBoolean("is_Admin"));
+
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return user;
+
+    }
 
     @Override
     public List<User> readAll() {
