@@ -9,7 +9,7 @@ public class DependencyLoaderListener implements ServletContextListener {
     @Override
     public void contextInitialized(ServletContextEvent sce) {
         System.out.println("Initializing servlet context...");
-        DatasourceService.getConnection();
+
 
         System.out.println("Servlet context initialized!");
     }

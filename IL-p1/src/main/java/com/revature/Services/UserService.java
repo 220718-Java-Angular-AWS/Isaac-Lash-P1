@@ -32,6 +32,7 @@ public class UserService  {
 
     public void deleteUser(int id) {
         dao.delete(id);
+
     }
 }
 

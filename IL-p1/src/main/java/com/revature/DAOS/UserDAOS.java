@@ -35,33 +35,7 @@ public class UserDAOS implements DAOScrud<User> {
             e.printStackTrace();
         }
     }
-    public User logIn(String email, String password){
-        User user = new User();
-        try{
-            String sql = "SELECT * FROM user_table WHERE email_add = ? AND use_pass = ?";
-            PreparedStatement pmt = connection.prepareStatement(sql);
-            pmt.setString(1,email);
-            pmt.setString(2,password);
-            ResultSet results = pmt.executeQuery();
 
-            if(results.next()) {
-                user.setUserId(results.getInt("user_id"));
-                user.setFirstName(results.getString("first_name"));
-                user.setLastName(results.getString("last_name"));
-                user.setEmail(results.getString("email_add"));
-                user.setPassword(results.getString("use_pass"));
-                user.setAdmin(results.getBoolean("is_Admin"));
-
-            }
-
-
-
-
-        }catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return user;
-    }
     @Override
     public User read(int uid) {
         User user = new User();
@@ -95,11 +69,11 @@ public class UserDAOS implements DAOScrud<User> {
         List<User> userList = new LinkedList<>();
         try {
             String sql = "SELECT * FROM user_table";
-            System.out.println("made it first");
+
             PreparedStatement pstmt = connection.prepareStatement(sql);
 
             ResultSet results = pstmt.executeQuery();
-            System.out.println("made it");
+
 
 
             while(results.next()) {
@@ -160,5 +134,6 @@ public class UserDAOS implements DAOScrud<User> {
         }catch (SQLException e) {
             e.printStackTrace();
         }
+        System.out.println("deleted");
     }
 }
