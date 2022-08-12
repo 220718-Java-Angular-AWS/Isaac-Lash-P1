@@ -68,7 +68,7 @@ public class UserServlet extends HttpServlet {
             bob.append(buffer.readLine());
         }
         String json = bob.toString();
-
+        System.out.println("posting");
 
         User newUser = mapper.readValue(json, User.class);
         service.saveUser(newUser);

@@ -26,7 +26,7 @@ public class UserDAOS implements DAOScrud<User> {
             pstmt.setString(2, user.getLastName());
             pstmt.setString(3, user.getEmail());
             pstmt.setString(4, user.getPassword());
-
+            System.out.println("creating user");
             pstmt.executeUpdate();
 
 
