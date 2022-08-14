@@ -9,6 +9,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.BufferedReader;
 import java.io.IOException;
+import java.util.LinkedList;
 import java.util.List;
 
 public class UserServlet extends HttpServlet {
@@ -43,7 +44,9 @@ public class UserServlet extends HttpServlet {
             //return the one the request wants
             Integer userId = Integer.parseInt(req.getParameter("user-id"));
 
+
             User user = service.getUser(userId);
+
             String json = mapper.writeValueAsString(user);
             resp.getWriter().println(json);
         }else {
@@ -62,6 +65,7 @@ public class UserServlet extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        System.out.println("new post");
         StringBuilder bob = new StringBuilder(); //bob da string builder
         BufferedReader buffer = req.getReader();
         while(buffer.ready()) {

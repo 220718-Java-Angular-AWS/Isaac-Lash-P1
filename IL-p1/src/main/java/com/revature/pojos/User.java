@@ -90,15 +90,6 @@ public class User {
         return Objects.hash(userId, firstName, lastName, email, password, isAdmin);
     }
 
-  /*  @Override
-    public String toString() {
-        return "User{" +
-                "userId=" + userId +
-                ", firstName='" + firstName + '\'' +
-                ", lastName='"+ lastName + '\''+
-                ", email='" + email + '\'' +
-                ", password='" + password + '\'' +
-                '}';
-    }*/
+
 
 }

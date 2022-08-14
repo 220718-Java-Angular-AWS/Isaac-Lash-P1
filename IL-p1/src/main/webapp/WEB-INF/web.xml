@@ -30,6 +30,16 @@
         <url-pattern>/user</url-pattern>
     </servlet-mapping>
 
+    <!-- CORS FILTER -->
+    <filter>
+        <filter-name>CorsFilter</filter-name>
+        <filter-class>com.revature.servlets.CORSFilter</filter-class>
+    </filter>
 
+    <filter-mapping>
+        <filter-name>CorsFilter</filter-name>
+        <url-pattern>/*</url-pattern>
+    </filter-mapping>
+    <!-- /CORS FILTER -->
 
 </web-app>

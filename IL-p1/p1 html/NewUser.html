@@ -28,15 +28,15 @@
 <script>
     // The function is asynchronous. This just means we can use the "await" keyword to make the code execute asynchronously.
     async function getTasksForUser() {
-
+console.log("starting")
         //Here we are building our user object that we will send as the request body. For each of the three fields in this
         //object - username, email, and password - we are pulliung the value from our input elements up in the body. 
         //This method we are using is called "DOM Manipulation" where we access and potentially change the HTML elements in the DOM.
         let user = {
-            firstName: document.getElementById("fName").value,
-            lastName: document.getElementById("lName").value,
-            email: document.getElementById("email").value,
-            password: document.getElementById("password").value
+            'firstName': document.getElementById("fName").value,
+            'lastName': document.getElementById("lName").value,
+            "email": document.getElementById("email").value,
+            "password": document.getElementById("password").value
         }
 
 
@@ -55,9 +55,9 @@
         let response = await fetch(url, {
             //this code block is all the second parameter for fetch()
             method: 'POST',
-            headers: {
+            headers: {'Content-Type': 'application/json;charset=utf-8'
                 //nested within the object is another, this one is the headers for the request
-                'Content-Type': 'application/json;charset=utf-8'
+                
             },
             //and now we stringify our user object into a json string which makes up the body of our request.
             body: JSON.stringify(user)
@@ -70,7 +70,7 @@
         } else {
             alert("Something went wrong...");
         }
-
+        console.log("ending");
     }
 </script>
 

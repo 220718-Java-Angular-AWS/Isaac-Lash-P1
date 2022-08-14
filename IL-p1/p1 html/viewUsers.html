@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<!-- This is boilerplate HTML header stuff -->
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>View Tasks</title>
+</head>
+
+<!-- We will have a very small html body for this page, it's basically empty with a palceholder we will use to 
+add our data to. We give the <div> element an id attribute so that we can find the element in the DOM later.
+We want to use this element to add new HTML into the document, the content that comes back from our fetch() request-->
+<body>
+    <div id="userList"></div>
+    Get user by Id: <input type="number" onkeypress="return event.charCode >= 48 && event.charCode <= 57" id="userId" value="0"><br>
+     <!-- onkeypress="return event.charCode >= 48 && event.charCode <= 57" checks the input as the keyboard keys are pressed to prevent the input of anthing other than 0-9 so no decimals or - allowed -->
+    <p>(Leave blank if you want to see them all)</p> <br>
+
+    <button type=" button" onclick="getTasksForUser()" >see them</button>
+</body>
+
+<!-- And now the script portion where we can write our javascript code -->
+<script>
+    /* We prepare our API call. This is just like the one in newUserForm.html except it is a GET request and it has no body.
+    We still need to add two parameters to fetch(), the url and the object that has the rest of the message stuff.
+
+    This is also a special kind of function, an IIFE. We will learn more about Imediately Invoked Function Expressions later.
+    Basically it's just a function that gets called as soon as it is declared.
+
+    This one is also marked "async" which means we can "await" when we need to. Again, we'll discuss that in greater detail later.
+
+    We are also handing off the userId in the parameter list. For now I am hard coding the value of "1" to be sent to this
+    function. That id gets concatinated into the url string, which has a parameter list at the end.
+    */
+    async function getTasksForUser() {
+        // url is a server location 
+        
+        let userIdent = document.getElementById("userId").value
+        let url = 'http://localhost:8080/IL-p1/user'
+       
+       
+        if (userIdent >= 1 ) {
+            
+            url += '?user-id='+ userIdent;
+            
+            
+        } 
+        let response = await fetch(url, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json;charset=utf-8'
+            }
+        });
+
+
+        if(userIdent !=0 ){
+            let user = await response.json();
+           
+            htmlElement.innerHTML += "<h4>First Name: " + user.firstName + "</h4>"
+            htmlElement.innerHTML += "<h4>Last Name: " + user.lastName + "</h4>"
+            htmlElement.innerHTML += "<p>Email: " + user.email + "</p>"
+            htmlElement.innerHTML += "<p>Admin: " + user.admin + "</p><br><br>"
+        }else{
+        //parse the JSON in that response
+        let array = await response.json();
+
+        //get the element where we will place our content
+        let htmlElement = document.getElementById('userList');
+
+        //This is just looping through an array, exactly the same as Java
+        for (let i = 0; i < array.length; i++) {
+            let user = array[i];
+
+
+            //insert into the web page the data
+            htmlElement.innerHTML += "<h4>UserID: " + user.userId + "</h4>"
+            htmlElement.innerHTML += "<h4>First Name: " + user.firstName + "</h4>"
+            htmlElement.innerHTML += "<h4>Last Name: " + user.lastName + "</h4>"
+            htmlElement.innerHTML += "<p>Email: " + user.email + "</p>"
+            htmlElement.innerHTML += "<p>Admin: " + user.admin + "</p><br><br>"
+        }
+            /* Our array contains all of the task objects sent back from the API in response to our request. 
+            As we loop through it we create and insert content into the body of our HTML document above. When we 
+            have finished traversing the array, we should see the info about our tasks on the page.
+
+            innerHTML is literally the text which would be nested inside the element. In this case the element is the 
+            <div> above with the id "taskList". We find that element and insert the HTML tags and text to make our task info
+            appear on screen.
+            */
+        }
+
+
+    };//This is the part of the IIFE expression where we give it the parameter "1" and invoke the function.
+
+
+</script>
+
+</html>
