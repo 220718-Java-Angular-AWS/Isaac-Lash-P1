@@ -27,7 +27,7 @@ public class RequestDAOS implements DAOScrud<Requests> {
     public void create(Requests requests) {
 
         try{
-            String sql = "INSERT INTO reimburse_req (user_id, req_comment, req_reason, req_amount, isApproved) VALUES( ?, ?, ?, ?);";
+            String sql = "INSERT INTO reimburse_req (user_id, req_comment, req_reason, req_amount, isApproved) VALUES( ?, ?, ?, ?, 'Pending');";
             PreparedStatement pstmt = connection.prepareStatement(sql);
             pstmt.setInt(1, requests.getUserId());
             pstmt.setString(2, requests.getComment());
@@ -57,8 +57,8 @@ public class RequestDAOS implements DAOScrud<Requests> {
                 req.setComment(results.getString("req_comment"));
                 req.setReason(results.getString("req_reason"));
                 req.setAmount(results.getDouble("req_amount"));
-                req.setApproved(results.getBoolean("approved"));
-                req.setDate(results.getString("date"));
+                req.setApproved(results.getString("isapproved"));
+
             }
 
         } catch (SQLException e) {
@@ -68,7 +68,34 @@ public class RequestDAOS implements DAOScrud<Requests> {
         return req;
 
     }
+public List<Requests> userOnly(Integer users){
+    List<Requests> reqList = new LinkedList<>();
+    try {
+        String sql = "SELECT * FROM reimburse_req WHERE user_id = ?";
+        PreparedStatement pstmt = connection.prepareStatement(sql);
+        pstmt.setInt(1, users);
+        ResultSet results = pstmt.executeQuery();
 
+
+
+        while(results.next()) {
+            Requests req = new Requests();
+            req.setReqId(results.getInt("req_id"));
+            req.setUserId(results.getInt("user_id"));
+            req.setComment(results.getString("req_comment"));
+            req.setReason(results.getString("req_reason"));
+            req.setAmount(results.getDouble("req_amount"));
+            req.setApproved(results.getString("isapproved"));
+
+            reqList.add(req);
+        }
+
+    } catch (SQLException e) {
+        e.printStackTrace();
+    }
+
+    return reqList;
+}
     @Override
     public List<Requests> readAll() {
         List<Requests> reqList = new LinkedList<>();
@@ -86,8 +113,8 @@ public class RequestDAOS implements DAOScrud<Requests> {
                 req.setComment(results.getString("req_comment"));
                 req.setReason(results.getString("req_reason"));
                 req.setAmount(results.getDouble("req_amount"));
-                req.setApproved(results.getBoolean("approved"));
-                req.setDate(results.getString("date"));
+                req.setApproved(results.getString("isapproved"));
+
                 reqList.add(req);
             }
 
@@ -101,13 +128,13 @@ public class RequestDAOS implements DAOScrud<Requests> {
     @Override
     public void update(Requests requests) {
         try {
-            String sql = "UPDATE reimburse_req SET user_id = ?, req_comment = ?, req_reason = ?, req_amount = ?, approved = ?, WHERE req_id = ?";
+            String sql = "UPDATE reimburse_req SET user_id = ?, req_comment = ?, req_reason = ?, req_amount = ?, isapproved = ? WHERE req_id = ?";
             PreparedStatement pstmt = connection.prepareStatement(sql);
             pstmt.setInt(1, requests.getUserId());
             pstmt.setString(2, requests.getComment());
             pstmt.setString(3, requests.getReason());
             pstmt.setDouble(4, requests.getAmount());
-            pstmt.setBoolean(5, requests.isApproved());
+            pstmt.setString(5, requests.getApproved());
             pstmt.setInt(6, requests.getReqId());
             pstmt.executeUpdate();
 

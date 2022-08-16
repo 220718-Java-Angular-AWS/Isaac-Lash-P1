@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<!-- This is boilerplate HTML header stuff -->
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
+    <title>User Home</title>
+</head>
+
+
+<body> <h1>New Request</h1>
+   
+    <br>
+    <label for="Reason">Reason for Request:</label>
+    <select name="reason" id="reason" required>
+      <optgroup label="Reason for request">
+        <option value="">No Reason</option>
+        <option value="Mileage">Mileage</option>
+        <option value="Rental">Rental</option>
+        <option value="Meal">Meal</option>
+        <option value="Airfare">Airfare</option>
+        <option value="Purchase">Purchase</option>
+      </optgroup>
+    </select>
+    <br><br><br>
+    <div id="idHere"></div>
+    
+    <br><br>
+    <label>Amount: $</label>
+    <input type="number" id="amount" min="0" maxlength="100000" step=".01">
+    <br><br>
+    <label>Comment:</label>
+    <br>
+    <textarea type="text" rows="6" cols="100" id="comment" required></textarea>
+    <br>
+    <button type="button" id="btn" onclick="newRequest()">Give me Monery! (submit)</button>
+    <button type="button" onclick="location.href='userHome.html'">Ok i'm done (back to homepage)</button>
+</body>
+<script>
+    let htmlElement= document.getElementById('idHere')
+    htmlElement.innerHTML +="<label>Employee ID#: </label>"+ window.sessionStorage.getItem('userID')
+async function newRequest(){
+
+
+    let url =  'http://localhost:8080/IL-p1/request'
+
+    let req = {
+   
+    "userId": sessionStorage.getItem('userID'),
+    "comment": document.getElementById('comment').value,
+    "reason": document.getElementById('reason').value,
+    "amount": document.getElementById('amount').value
+
+    }
+
+        let response = await fetch(url, {
+            method: 'POST',
+            headers:{'Content-Type': 'application/json;charset=utf-8'},
+            body: JSON.stringify(req)
+        })
+        
+        
+        if(response.status == 200){
+            alert("Thank you for your request! It will totally not be ignored shortly.")
+
+        }else{alert("you even mo dumb, do it again!")}
+}
+
+
+
+
+</script></html>

@@ -8,30 +8,24 @@ public class Requests {
     private String comment;
     private String reason;
     private double amount;
-    private boolean approved;
+    private String approved;
 
-    private String date;
+
 
     public Requests() {
     }
 
-    public Requests(Integer userId, String comment, String reason, double amount, boolean approved) {
+    public Requests(Integer userId, String comment, String reason, double amount, String approved) {
         this.reqId = null;
         this.userId = userId;
         this.comment = comment;
         this.reason = reason;
         this.amount = amount;
         this.approved = approved;
-        this.date = "";
+
     }
 
-    public String getDate() {
-        return date;
-    }
 
-    public void setDate(String date) {
-        this.date = date;
-    }
 
     public Integer getReqId() {
         return reqId;
@@ -73,11 +67,11 @@ public class Requests {
         this.amount = amount;
     }
 
-    public boolean isApproved() {
+    public String  getApproved() {
         return approved;
     }
 
-    public void setApproved(boolean approved) {
+    public void setApproved(String  approved) {
         this.approved = approved;
     }
     @Override

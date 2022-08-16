@@ -20,7 +20,9 @@ public class RequestService {
     public Requests getRequest(int id) {
         return dao.read(id);
     }
-
+    public List<Requests> getAllForUser(Integer users) {
+        return dao.userOnly(users);
+    }
     public List<Requests> getAllRequests() {
         return dao.readAll();
     }

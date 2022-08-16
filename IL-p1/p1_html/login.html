@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<!-- This is boilerplate HTML header stuff -->
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
+    <title>Welcome to the Reimbursement Portal</title>
+</head>
+
+
+<body>
+    <h4>Welcome to the Reimbursement Portal!</h4>
+    <h2>Please Login to continue</h2>
+    Email: <input type="text" id="email" ><br>
+    Password: <input type="text" id="password"><br>
+    <button type="button" onclick="logMeInCoach()" >Log In</button><br>
+    Not a user? click <a href="C:\Users\MLASH\Git-practice\Isaac-Lash-P1\IL-p1\p1_html\NewUser.html" class="link-url">HERE!</a>
+
+</body>
+
+<script>
+async function logMeInCoach(){
+let email =document.getElementById('email').value
+let password = document.getElementById('password').value
+console.log(email)
+console.log(password)
+let url = 'http://localhost:8080/IL-p1/auth?email='+email+ '&passw=' +password;
+let response = await fetch(url, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json;charset=utf-8'
+            }
+        });
+
+let user = await response.json();
+
+
+if(user.userId != null){
+window.sessionStorage.setItem('userID', user.userId)
+
+sessionStorage.setItem('admin', user.admin);
+alert("Welcome " +user.firstName +" " + user.lastName+ "!")
+
+if(user.admin == true){
+    location.href='file:///C:/Users/MLASH/Git-practice/Isaac-Lash-P1/IL-p1/p1_html/adminControls.html'
+}else{
+location.href='file:///C:/Users/MLASH/Git-practice/Isaac-Lash-P1/IL-p1/p1_html/userHome.html'
+}
+}else{alert("You a dumb, try again.")}
+
+
+
+}
+
+
+</script>
+
+</html>

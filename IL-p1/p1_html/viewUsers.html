@@ -5,19 +5,21 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>View Tasks</title>
+    <link rel="stylesheet" href="style.css">
+    <title>View Users</title>
 </head>
 
 <!-- We will have a very small html body for this page, it's basically empty with a palceholder we will use to 
 add our data to. We give the <div> element an id attribute so that we can find the element in the DOM later.
 We want to use this element to add new HTML into the document, the content that comes back from our fetch() request-->
 <body>
-    <div id="userList"></div>
+   
     Get user by Id: <input type="number" onkeypress="return event.charCode >= 48 && event.charCode <= 57" id="userId" value="0"><br>
      <!-- onkeypress="return event.charCode >= 48 && event.charCode <= 57" checks the input as the keyboard keys are pressed to prevent the input of anthing other than 0-9 so no decimals or - allowed -->
-    <p>(Leave blank if you want to see them all)</p> <br>
+    <p>(Leave zero if you want to see them all)</p> <br>
 
-    <button type=" button" onclick="getTasksForUser()" >see them</button>
+    <button type=" button" onclick="getUsers()" >Show Them To Me!</button>
+    <div id="userList"></div>
 </body>
 
 <!-- And now the script portion where we can write our javascript code -->
@@ -33,7 +35,7 @@ We want to use this element to add new HTML into the document, the content that 
     We are also handing off the userId in the parameter list. For now I am hard coding the value of "1" to be sent to this
     function. That id gets concatinated into the url string, which has a parameter list at the end.
     */
-    async function getTasksForUser() {
+    async function getUsers() {
         // url is a server location 
         
         let userIdent = document.getElementById("userId").value
@@ -43,7 +45,7 @@ We want to use this element to add new HTML into the document, the content that 
         if (userIdent >= 1 ) {
             
             url += '?user-id='+ userIdent;
-            
+            console.log(url)
             
         } 
         let response = await fetch(url, {
@@ -53,20 +55,34 @@ We want to use this element to add new HTML into the document, the content that 
             }
         });
 
+        let htmlElement = document.getElementById('userList');
+        htmlElement.innerHTML = ' '
+        if(userIdent >= 1 ){
+            
+           let user = await response.json();
+            console.log(user.firstName)
+        //get the element where we will place our content
+       
 
-        if(userIdent !=0 ){
-            let user = await response.json();
-           
-            htmlElement.innerHTML += "<h4>First Name: " + user.firstName + "</h4>"
-            htmlElement.innerHTML += "<h4>Last Name: " + user.lastName + "</h4>"
-            htmlElement.innerHTML += "<p>Email: " + user.email + "</p>"
-            htmlElement.innerHTML += "<p>Admin: " + user.admin + "</p><br><br>"
+        //This is just looping through an array, exactly the same as Java
+        
+
+            
+            
+
+                    //insert into the web page the data
+                htmlElement.innerHTML += "<h4>UserID: " + user.userId + "</h4>"
+                htmlElement.innerHTML += "<h4>First Name: " + user.firstName + "</h4>"
+                htmlElement.innerHTML += "<h4>Last Name: " + user.lastName + "</h4>"
+                htmlElement.innerHTML += "<p>Email: " + user.email + "</p>"
+                htmlElement.innerHTML += "<p>Admin: " + user.admin + "</p><br><br>"
+        
         }else{
         //parse the JSON in that response
         let array = await response.json();
 
         //get the element where we will place our content
-        let htmlElement = document.getElementById('userList');
+        
 
         //This is just looping through an array, exactly the same as Java
         for (let i = 0; i < array.length; i++) {

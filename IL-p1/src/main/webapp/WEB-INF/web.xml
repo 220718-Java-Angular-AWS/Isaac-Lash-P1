@@ -42,4 +42,15 @@
     </filter-mapping>
     <!-- /CORS FILTER -->
 
+    <servlet-mapping>
+        <servlet-name>authServlet</servlet-name>
+        <url-pattern>/auth</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>authServlet</servlet-name>
+        <servlet-class>com.revature.servlets.authServlet</servlet-class>
+    </servlet>
+
+
 </web-app>

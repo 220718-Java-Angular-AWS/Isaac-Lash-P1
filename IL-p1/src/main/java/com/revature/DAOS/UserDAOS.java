@@ -149,6 +149,13 @@ public class UserDAOS implements DAOScrud<User> {
     @Override
     public void delete(int id) {
         try{
+            String anotherOne = "DELETE FROM reimburse_req WHERE user_id = ?";
+
+            PreparedStatement psmt = connection.prepareStatement(anotherOne);
+            psmt.setInt(1, id);
+
+            psmt.executeUpdate();
+            //gotta delete the requests first to be able to delete a user thanks to primary key magic
             String sql = "DELETE FROM user_table WHERE user_id = ?";
             PreparedStatement pstmt = connection.prepareStatement(sql);
             pstmt.setInt(1, id);
@@ -158,10 +165,11 @@ public class UserDAOS implements DAOScrud<User> {
 
 
 
-
         }catch (SQLException e) {
             e.printStackTrace();
         }
         System.out.println("deleted");
     }
+
+
 }

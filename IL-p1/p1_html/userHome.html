@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<!-- This is boilerplate HTML header stuff -->
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
+    <title>User Home</title>
+</head>
+
+<body>
+    <h2>What can we do for you today?</h2>
+    <h2>Please select the option below</h2>
+    <button type="button" onclick="logMeInCoach()">Edit Profile</button> <button type="button" onclick="showRequests()">View Requests</button><br>
+    <button type="button" onclick="newRequest()" >Create Request</button><br>
+    <input type="text"type="number" onkeypress="return event.charCode >= 48 && event.charCode <= 57" id="EditID" placeholder="Request ID Here" value="0"> <button type="button" onclick="editReq()" >Edit Request</button>
+   <br><input type="text"type="number" onkeypress="return event.charCode >= 48 && event.charCode <= 57" id="DeleteID" placeholder="Request ID Here" value="0"> <button type="button" onclick="deleteIt()" >Delete Request</button>
+    <br>
+    <div id="requestList"></div>
+</body>
+
+<script>
+    (async function showRequests() {
+        let url = 'http://localhost:8080/IL-p1/request?user-id='+window.sessionStorage.getItem('userID')
+    
+    let response = await fetch(url, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json;charset=utf-8'
+            }
+        });
+        let array = await response.json();
+        let htmlElement = document.getElementById('requestList');
+//get the element where we will place our content
+htmlElement.innerHTML = ' '
+
+//This is just looping through an array, exactly the same as Java
+for (let i = 0; i < array.length; i++) {
+    let req = array[i];
+
+
+    //insert into the web page the data
+    htmlElement.innerHTML += "<h4>Request ID: " + req.reqId + "</h4>"
+    
+    htmlElement.innerHTML += "<h4>Reason: " + req.reason + "</h4>"
+    htmlElement.innerHTML += "<h4>Comment: " + req.comment + "</h4>"
+    htmlElement.innerHTML += "<p>Amount: $" + req.amount + "</p>"
+    htmlElement.innerHTML += "<p>Status: "+ req.approved+"</p><br><br>"
+
+    
+    
+
+}
+
+
+    
+})();
+async function deleteIt(){
+
+    
+    let url =  'http://localhost:8080/IL-p1/request?req-id=' + document.getElementById('DeleteID').value
+
+    let response = await fetch(url,{
+        method: 'GET',
+            headers: {
+                'Content-Type': 'application/json;charset=utf-8'
+            }
+    });
+    if(response.approved == "Approved"){
+        alert("cant get rid of your request for money After we've paid you buddy.")
+    }else{ 
+
+
+    
+let durl ='http://localhost:8080/IL-p1/request?req-id=' + document.getElementById('DeleteID').value
+let reqponse = await fetch(durl, {
+    method: 'DELETE',
+    headers:{'Content-Type': 'application/json;charset=utf-8'},
+})
+if(reqponse.status == 200){
+    alert("No more money for you! Request deleted!");
+    location.href = 'userHome.html'
+}else{alert("This was probably the easiest button and you still messed it up.")}
+}}
+
+async function editReq(){
+    let editID = document.getElementById('EditID').value
+    let url =  'http://localhost:8080/IL-p1/request?req-id=' + editID
+
+    let response = await fetch(url,{
+        method: 'GET',
+            headers: {
+                'Content-Type': 'application/json;charset=utf-8'
+            }
+    });
+let request= await response.json();
+
+window.sessionStorage.setItem('uID', request.userId)
+window.sessionStorage.setItem('app', request.approved)
+let theLink = "location.href=NewRequest.html"
+let htmlElement = document.getElementById('requestList');
+htmlElement.innerHTML = ' '
+
+    htmlElement.innerHTML += "<h4>Request ID: "+ request.reqId + "</h4>"
+    
+    htmlElement.innerHTML += "<h4>Reason: <input type='text' id = 'reason' value = '" + request.reason + "'></h4>"
+    htmlElement.innerHTML += "<h4>Comment: <textarea type='text' rows='6' cols='100' id = 'comment' > " + request.comment + "</textarea></h4>"
+    htmlElement.innerHTML += "<p>Amount: $<input type='number' id = 'amount' value = '"+request.amount+"'> </p>"
+    htmlElement.innerHTML += "<p>Status: "+ request.approved+"</p>"
+    htmlElement.innerHTML += "<button type= 'button' onclick='updateReq()'>All Good! ...Probably this time.</button>   <button type= 'button' onclick='location.href=&quot;userHome.html&quot;'>NO! I DONT WANNA EDIT!!!!</button> "
+
+
+}
+async function updateReq(){
+
+let upRequest= {
+    reqId: document.getElementById('EditID').value,
+    userId: sessionStorage.getItem('uID'),
+    comment: document.getElementById('comment').value,
+    reason:  document.getElementById('reason').value,
+    amount:  document.getElementById('amount').value,
+    approved: sessionStorage.getItem('app')
+}
+console.log(upRequest)
+    let url =  'http://localhost:8080/IL-p1/request'
+
+    let response = await fetch(url,{
+        method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json;charset=utf-8'
+            },
+            body: JSON.stringify(upRequest)
+    });
+
+   if(response.status == 200){
+    location.href = 'userHome.html'
+   }
+
+}
+
+async function newRequest(){location.href='newRequest.html'}
+
+</script>
+
+</html>

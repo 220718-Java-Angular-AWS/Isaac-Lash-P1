@@ -4,6 +4,8 @@ package com.revature.servlets;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.revature.Services.RequestService;
 import com.revature.pojos.Requests;
+import com.revature.pojos.User;
+
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -33,18 +35,26 @@ public class RequestServlet extends HttpServlet{
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         String param = req.getParameter("req-id");
+        String users = req.getParameter("user-id");
 
-        if(param == null) {
+        if(param == null&& users == null) {
             //Return all
-            List<Requests> userList = service.getAllRequests();
-            String json = mapper.writeValueAsString(userList);
+            List<Requests> reqList = service.getAllRequests();
+            String json = mapper.writeValueAsString(reqList);
             resp.getWriter().println(json);
-        } else {
+        } else if(param != null){
             //return the one the request wants
             Integer reqId = Integer.parseInt(req.getParameter("req-id"));
 
             Requests request = service.getRequest(reqId);
             String json = mapper.writeValueAsString(request);
+            resp.getWriter().println(json);
+        }else{
+            Integer userId = Integer.parseInt(req.getParameter("user-id"));
+
+
+            List<Requests> listReq = service.getAllForUser(userId);
+            String json = mapper.writeValueAsString(listReq);
             resp.getWriter().println(json);
         }
 
@@ -66,6 +76,7 @@ public class RequestServlet extends HttpServlet{
 
         Requests newRequest = mapper.readValue(json, Requests.class);
         service.saveRequest(newRequest);
+        resp.setStatus(200);
     }
 
     @Override

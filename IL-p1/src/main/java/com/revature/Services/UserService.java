@@ -38,5 +38,8 @@ public class UserService  {
         dao.delete(id);
 
     }
+    public User authenticate(String email, String password){
+        return dao.logIn(email, password);
+    }
 }
 
