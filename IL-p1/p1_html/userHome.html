@@ -12,7 +12,7 @@
 <body>
     <h2>What can we do for you today?</h2>
     <h2>Please select the option below</h2>
-    <button type="button" onclick="logMeInCoach()">Edit Profile</button> <button type="button" onclick="showRequests()">View Requests</button> 
+    <button type="button" onclick="changeMeUp()">Edit Profile</button> <div id="profile"></div>
     <button type="button" onclick="newRequest()" >Create Request</button><br>
     <input type="text"type="number" onkeypress="return event.charCode >= 48 && event.charCode <= 57" id="EditID" placeholder="Request ID Here For Editing" value="0"> <button type="button" onclick="editReq()" >Edit Request</button>
    <br><input type="text"type="number" onkeypress="return event.charCode >= 48 && event.charCode <= 57" id="DeleteID" placeholder="Request ID Here For Deletion" value="0"> <button type="button" onclick="deleteIt()" >Delete Request</button>
@@ -27,6 +27,61 @@ let htmlElement=document.getElementById('adminControls')
 if(window.sessionStorage.getItem('admin')== "true"){
     htmlElement.innerHTML += "<button  type='button' onclick='location.href=&quot;viewUsers.html&quot;'>View and Update User Status</button> <button  type='button' onclick='location.href=&quot;approveRequests.html&quot;'>Approve/Deny Requests</button>"
 }
+
+
+async function changeMeUp(){
+
+let htmlElement=document.getElementById('profile')
+let url = 'http://localhost:8080/IL-p1/user?user-id='+ window.sessionStorage.getItem('userID')
+
+    let response = await fetch(url, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json;charset=utf-8'
+            }
+        });
+    let user = await response.json()
+
+    htmlElement.innerHTML += "<h4>User ID: "+user.userId
+    htmlElement.innerHTML += "<p>First Name: $<input type='text' id = 'fName' value = '"+user.firstName+"'> </p>"
+    htmlElement.innerHTML += "<p>Last Name: $<input type='text' id = 'lName' value = '"+user.lastName+"'> </p>"
+    htmlElement.innerHTML += "<p>Email: $<input type='text' id = 'email' value = '"+user.email+"'> </p>"
+    htmlElement.innerHTML += "<p>First Name: $<input type='text' id = 'password' value = '"+user.password+"'> </p>"
+    htmlElement.innerHTML += "<p>Admin Status: "+ user.admin+"</p>"
+    htmlElement.innerHTML += "<button type= 'button' onclick='updateUser()'>New Click New Me (save profile)</button>   <button type= 'button' onclick='location.href=&quot;userHome.html&quot;'>I Am Happy As I Am. (cancel)</button> <br> <br> "
+    
+
+}
+
+async function updateUser(){
+let admist = null
+if(window.sessionStorage.getItem('admin') == "true"){
+    admist = true
+}else{admist = false}
+
+
+   let used = {
+            'userId': window.sessionStorage.getItem('userID'),
+            'firstName': document.getElementById("fName").value,
+            'lastName': document.getElementById("lName").value,
+            "email": document.getElementById("email").value,
+            "password": document.getElementById("password").value,
+            "admin": admist
+        }
+        let urls = 'http://localhost:8080/IL-p1/user'
+    let responsed = await fetch(urls, {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json;charset=utf-8'
+            },
+            body: JSON.stringify(used)
+        });
+
+    if(responsed.status==200){
+        alert("Your identity has changed"+document.getElementById("fName").value)
+    }  
+}
+
 
     (async function showRequests() {
         let url = 'http://localhost:8080/IL-p1/request?user-id='+window.sessionStorage.getItem('userID')
@@ -111,12 +166,11 @@ htmlElement.innerHTML = ' '
 
     htmlElement.innerHTML += "<h4>Request ID: "+ request.reqId + "</h4>"
     
-    htmlElement.innerHTML += "<h4>Reason: <input type='text' id = 'reason' value = '" + request.reason + "'></h4>"
+    htmlElement.innerHTML += "<h4>Reason: <select name='reason' id='reason' required><optgroup label='Reason for request'><option value='"+request.reason+"'>"+request.reason+"</option><option value='Mileage'>Mileage</option><option value='Rental'>Rental</option><option value='Meal'>Meal</option><option value='Airfare'>Airfare</option><option value='Purchase'>Purchase</option></optgroup></select>"
     htmlElement.innerHTML += "<h4>Comment: <textarea type='text' rows='6' cols='100' id = 'comment' > " + request.comment + "</textarea></h4>"
     htmlElement.innerHTML += "<p>Amount: $<input type='number' id = 'amount' value = '"+request.amount+"'> </p>"
     htmlElement.innerHTML += "<p>Status: "+ request.approved+"</p>"
     htmlElement.innerHTML += "<button type= 'button' onclick='updateReq()'>All Good! ...Probably this time.</button>   <button type= 'button' onclick='location.href=&quot;userHome.html&quot;'>NO! I DONT WANNA EDIT!!!!</button> "
-
 
 }
 async function updateReq(){

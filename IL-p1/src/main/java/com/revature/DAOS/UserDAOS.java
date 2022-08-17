@@ -126,18 +126,20 @@ public class UserDAOS implements DAOScrud<User> {
 
     @Override
     public void update(User user) {
-
+        System.out.println("updating user");
         try {
-            String sql = "UPDATE user_table SET first_name = ?, last_name = ?, email_add = ?, use_pass = ?, is_Admin = ?, WHERE user_id = ?";
+
+            String sql = "UPDATE user_table SET first_name = ?, last_name = ?, email_add = ?, use_pass = ?, is_admin = ? WHERE user_id = ?";
             PreparedStatement pstmt = connection.prepareStatement(sql);
             pstmt.setString(1, user.getFirstName());
             pstmt.setString(2, user.getLastName());
             pstmt.setString(3, user.getEmail());
             pstmt.setString(4, user.getPassword());
-            pstmt.setInt(5, user.getUserId());
-            pstmt.setBoolean(6, user.isAdmin());
-            pstmt.executeUpdate();
+            pstmt.setBoolean(5, user.isAdmin());
+            pstmt.setInt(6, user.getUserId());
 
+            pstmt.executeUpdate();
+            System.out.println("updated");
 
         } catch (SQLException e) {
             throw new RuntimeException(e);

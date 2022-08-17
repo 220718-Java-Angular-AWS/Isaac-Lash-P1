@@ -81,6 +81,7 @@ public class UserServlet extends HttpServlet {
     protected void doPut(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         StringBuilder bob = new StringBuilder(); //bob da string builder
         BufferedReader buffer = req.getReader();
+
         while(buffer.ready()) {
             bob.append(buffer.readLine());
         }
@@ -88,7 +89,10 @@ public class UserServlet extends HttpServlet {
 
 
         User newUser = mapper.readValue(json, User.class);
+
         service.updateUser(newUser);
+
+        resp.setStatus(200);
     }
 
     @Override

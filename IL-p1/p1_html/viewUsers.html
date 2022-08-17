@@ -18,21 +18,56 @@ We want to use this element to add new HTML into the document, the content that 
      <!-- onkeypress="return event.charCode >= 48 && event.charCode <= 57" checks the input as the keyboard keys are pressed to prevent the input of anthing other than 0-9 so no decimals or - allowed -->
     <p>(Leave zero if you want to see them all)</p> <br>
 
-    <button type=" button" onclick="getUsers()" >Show Them To Me!</button>
+    <button type=" button" onclick="getUsers()" >Show Them To Me!</button>  <button type="button" onclick="location.href='userHome.html'">I'm sick of looking at them (go home)</button>
     <div id="UserEdit"></div>
     <div id="userList"></div>
 </body>
 
 <!-- And now the script portion where we can write our javascript code -->
 <script>
-  let htmlElement= document.getElementById("UserEdit")
-  /*if(window.sessionStorage.getItem('admin') == "true"){
-
-    htmlElement.innerHTML += "<button type='button' onclick='openUser()'>Change User Permissions</button>"
-
-  }*/
+  
 
 async function changeUser(){
+    let userIdent = sessionStorage.getItem('changableID')
+    console.log(userIdent)
+    let url = 'http://localhost:8080/IL-p1/user?user-id='+ userIdent
+
+    let response = await fetch(url, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json;charset=utf-8'
+            }
+        });
+
+    let used = await response.json()
+        if(document.getElementById('administer').value=="true"){
+            used.admin= true
+        }else{used.admin = false}
+
+
+    let user = {
+        "userId": used.userId,
+        "firstName": used.firstName,
+        "lastName": used.lastName,
+        "email": used.email,
+        "password": used.password,
+        "admin": used.admin
+    }
+
+   
+
+    let urls = 'http://localhost:8080/IL-p1/user'
+    let responsed = await fetch(urls, {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json;charset=utf-8'
+            },
+            body: JSON.stringify(user)
+        });
+
+    if(responsed.status==200){
+        alert("Their membership has been reviewed")
+    }
 
 
 }
@@ -69,7 +104,7 @@ async function changeUser(){
         //This is just looping through an array, exactly the same as Java
         
 
-            
+            window.sessionStorage.setItem('changableID', user.userId)
             
 
                     //insert into the web page the data
@@ -80,7 +115,7 @@ async function changeUser(){
                 htmlElement.innerHTML += "<p>Admin: " + user.admin + "</p><br><br>"
             if(window.sessionStorage.getItem('admin')== "true" ){
                 
-                htmlElement.innerHTML+= "<select name='administer' id='administer' required><optgroup label='Shall they join the council?'><option value='false'>They shall not obtain the rank of Admin(No)</option><option value='true'>They have earned the rank of Admin(yes)</option></optgroup></select>"
+                htmlElement.innerHTML+= "<select name='administer' id='administer' required><optgroup label='Shall they join the council?'><option value=false>They shall not obtain the rank of Admin(No)</option><option value=true>They have earned the rank of Admin(yes)</option></optgroup></select>"
                 htmlElement.innerHTML+="<button type='button' onclick='changeUser()'>Change User Permissions</button>"
 
             
