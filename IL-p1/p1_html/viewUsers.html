@@ -18,7 +18,7 @@ We want to use this element to add new HTML into the document, the content that 
      <!-- onkeypress="return event.charCode >= 48 && event.charCode <= 57" checks the input as the keyboard keys are pressed to prevent the input of anthing other than 0-9 so no decimals or - allowed -->
     <p>(Leave zero if you want to see them all)</p> <br>
 
-    <button type=" button" onclick="getUsers()" >Show Them To Me!</button>  <button type="button" onclick="location.href='userHome.html'">I'm sick of looking at them (go home)</button>
+    <button class="btn" type=" button" onclick="getUsers()" >Show Them To Me!</button>  <button class="btn" type="button" onclick="location.href='userHome.html'">I'm sick of looking at them (go home)</button>
     <div id="UserEdit"></div>
     <div id="userList"></div>
 </body>
@@ -115,8 +115,8 @@ async function changeUser(){
                 htmlElement.innerHTML += "<p>Admin: " + user.admin + "</p><br><br>"
             if(window.sessionStorage.getItem('admin')== "true" ){
                 
-                htmlElement.innerHTML+= "<select name='administer' id='administer' required><optgroup label='Shall they join the council?'><option value=false>They shall not obtain the rank of Admin(No)</option><option value=true>They have earned the rank of Admin(yes)</option></optgroup></select>"
-                htmlElement.innerHTML+="<button type='button' onclick='changeUser()'>Change User Permissions</button>"
+                htmlElement.innerHTML+= "<select class='select' name='administer' id='administer' required><optgroup label='Shall they join the council?'><option value=false>They shall not obtain the rank of Admin(No)</option><option value=true>They have earned the rank of Admin(yes)</option></optgroup></select>"
+                htmlElement.innerHTML+="<button class='btn' type='button' onclick='changeUser()'>Change User Permissions</button>"
 
             
             }

@@ -12,9 +12,9 @@
 <body>
     <h3>Hello Admin!</h3>
     <h3>Time to Administrate</h3>
-    <button type="button" onclick="location.href='userHome.html'">Eh, I don't really feeeeeeel like it (Home)</button> <br> <br> 
+    <button class='btn' type="button" onclick="location.href='userHome.html'">Eh, I don't really feeeeeeel like it (Home)</button> <br> <br> 
     <input type="number" id="aReqId" onkeypress="return event.charCode >= 48 && event.charCode <= 57" >
-    <button type="button" onclick="displayReq()">View Request</button>
+    <button class='btn' type="button" onclick="displayReq()">View Request</button>
     <div id="reqQuestion" ></div><br> <br> 
    
     <div id="requestList"></div>
@@ -41,7 +41,7 @@ async function displayReq(){
     htmlElement.innerHTML += "<p>Amount: $" + req.amount + "</p>"
     htmlElement.innerHTML += "<p>Status: "+ req.approved+"</p><br><br>"
     htmlElement.innerHTML +="<select name='reason' id='Choice' required><optgroup label='Their Fate:'> <option value='Denied'> Let them eat cake! (Deny)</option> <option value='Approved'>Bake them a cake! (Approve)</option> </optgroup> </select> <br>"
-    htmlElement.innerHTML +=" <br> <button type ='button' onclick='subChoice()''>Cast Your decision upon the Penniless</button>"
+    htmlElement.innerHTML +=" <br> <button class='btn' type ='button' onclick='subChoice()''>Cast Your decision upon the Penniless</button>"
   
     }else{alert("Their fate was decided long before now. (Cant edit a request that was already denied/approved)")}
 }
@@ -59,11 +59,7 @@ async function subChoice(){
 let req = await response.json();
 var decision = document.getElementsByName('Choice');
               
-    /*        for(i = 0; i <= decision.length-1; i++) {
-                if(decision[i].checked){
-                    let finalDec = decision[i].value
-                }}
-console.log(finalDec)*/
+  
    let newReq = {
     "reqId": req.reqId,
     "userId": req.userId,

@@ -15,7 +15,7 @@
     <h2>Please Login to continue</h2>
     Email: <input type="text" id="email" ><br>
     Password: <input type="text" id="password"><br>
-    <button type="button" onclick="logMeInCoach()" >Log In</button><br>
+    <button class='btn' type="button" onclick="logMeInCoach()" >Log In</button><br>
     Not a user? click <a href="C:\Users\MLASH\Git-practice\Isaac-Lash-P1\IL-p1\p1_html\NewUser.html" class="link-url">HERE!</a>
 
 </body>
@@ -38,15 +38,15 @@ let user = await response.json();
 
 
 if(user.userId != null){
-window.sessionStorage.setItem('userID', user.userId)
+    window.sessionStorage.setItem('userID', user.userId)
 
-sessionStorage.setItem('admin', user.admin);
-
-
-alert("Welcome " +user.firstName +" " + user.lastName+ "!")
+    sessionStorage.setItem('admin', user.admin);
 
 
-location.href='userHome.html'
+    alert("Welcome " +user.firstName +" " + user.lastName+ "!")
+
+
+    location.href='userHome.html'
 
 }else{alert("You a dumb, try again.")}
 

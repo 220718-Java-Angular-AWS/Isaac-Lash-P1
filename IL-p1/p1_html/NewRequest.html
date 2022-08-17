@@ -14,7 +14,7 @@
    
     <br>
     <label for="Reason">Reason for Request:</label>
-    <select name="reason" id="reason" required>
+    <select class='select' name="reason" id="reason" required>
       <optgroup label="Reason for request">
         <option value="">No Reason</option>
         <option value="Mileage">Mileage</option>
@@ -35,8 +35,8 @@
     <br>
     <textarea type="text" rows="6" cols="100" id="comment" required></textarea>
     <br>
-    <button type="button" id="btn" onclick="newRequest()">Give me Monery! (submit)</button>
-    <button type="button" onclick="location.href='userHome.html'">Ok i'm done (back to homepage)</button>
+    <button class='btn' type="button" id="btn" onclick="newRequest()">Give me Monery! (submit)</button>
+    <button class='btn' type="button" onclick="location.href='userHome.html'">Ok i'm done (back to homepage)</button>
 </body>
 <script>
     let htmlElement= document.getElementById('idHere')

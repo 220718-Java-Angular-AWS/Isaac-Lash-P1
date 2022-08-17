@@ -12,10 +12,10 @@
 <body onload = "showRequests()">
     <h2>What can we do for you today?</h2>
     <h2>Please select the option below</h2>
-    <button type="button" onclick="changeMeUp()">Edit Profile</button> <div id="profile"></div>
-    <button type="button" onclick="newRequest()" >Create Request</button> 
-    <input type="text"type="number" onkeypress="return event.charCode >= 48 && event.charCode <= 57" id="EditID" placeholder="Request ID Here For Editing" value="0"> <button type="button" onclick="editReq()" >Edit Request</button>
-   <br><input type="text"type="number" onkeypress="return event.charCode >= 48 && event.charCode <= 57" id="DeleteID" placeholder="Request ID Here For Deletion" value="0"> <button type="button" onclick="deleteIt()" >Delete Request</button>
+    <button class='btn' type="button" onclick="changeMeUp()">Edit Profile</button> <div id="profile"></div>
+    <button class='btn' type="button" onclick="newRequest()" >Create Request</button> 
+    <input type="text"type="number" onkeypress="return event.charCode >= 48 && event.charCode <= 57" id="EditID" placeholder="Request ID Here For Editing" value="0"> <button class='btn' type="button" onclick="editReq()" >Edit Request</button>
+   <br><input type="text"type="number" onkeypress="return event.charCode >= 48 && event.charCode <= 57" id="DeleteID" placeholder="Request ID Here For Deletion" value="0"> <button class='btn' type="button" onclick="deleteIt()" >Delete Request</button>
      <br> <br>
     <div id="adminControls"></div>
     <br>
@@ -25,10 +25,10 @@
 <script>
 let htmlElement=document.getElementById('adminControls')
 if(window.sessionStorage.getItem('admin')== "true"){
-    htmlElement.innerHTML += "<h3>Special Admin Controls</h3> <br> <h4>*USE AT OWN RISK*</h4>"
-    htmlElement.innerHTML += "<button  type='button' onclick='location.href=&quot;viewUsers.html&quot;'>View and Update User Status</button> <button  type='button' onclick='location.href=&quot;approveRequests.html&quot;'>Approve/Deny Requests</button>"
+    htmlElement.innerHTML += "<h3>Special Admin Controls</h3> <h5>*USE AT OWN RISK*</h5>"
+    htmlElement.innerHTML += "<button  class='btn' type='button' onclick='location.href=&quot;viewUsers.html&quot;'>View and Update User Status</button> <button  class='btn' type='button' onclick='location.href=&quot;approveRequests.html&quot;'>Approve/Deny Requests</button>"
 
-htmlElement.innerHTML +=" <br> <br> Sort Requests by <select name='status' id='status' ><optgroup label='Sort by'><option value=' '>Nothing!</option><option value='Pending'>Pending!</option><option value='Approved'>Approved!</option><option value='Denied'>Denied!</option></optgroup></select> <button type='button' onclick='showRequests()' >View Sorted Requests</button>"
+htmlElement.innerHTML +=" <br> <br> Sort Requests by <select class='select' name='status' id='status' ><optgroup label='Sort by'><option value=' '>Nothing!</option><option value='Pending'>Pending!</option><option value='Approved'>Approved!</option><option value='Denied'>Denied!</option></optgroup></select> <button class='btn' type='button' onclick='showRequests()' >View Sorted Requests</button>"
 
 
 }
@@ -53,7 +53,7 @@ let url = 'http://localhost:8080/IL-p1/user?user-id='+ window.sessionStorage.get
     htmlElement.innerHTML += "<p>Email: $<input type='text' id = 'email' value = '"+user.email+"'> </p>"
     htmlElement.innerHTML += "<p>First Name: $<input type='text' id = 'password' value = '"+user.password+"'> </p>"
     htmlElement.innerHTML += "<p>Admin Status: "+ user.admin+"</p>"
-    htmlElement.innerHTML += "<button type= 'button' onclick='updateUser()'>New Click New Me (save profile)</button>   <button type= 'button' onclick='location.href=&quot;userHome.html&quot;'>I Am Happy As I Am. (cancel)</button> <br> <br> "
+    htmlElement.innerHTML += "<button class='btn' type= 'button' onclick='updateUser()'>New Click New Me (save profile)</button>   <button class='btn' type= 'button' onclick='location.href=&quot;userHome.html&quot;'>I Am Happy As I Am. (cancel)</button> <br> <br> "
     
 
 }
@@ -205,11 +205,11 @@ htmlElement.innerHTML = ' '
 
     htmlElement.innerHTML += "<h4>Request ID: "+ request.reqId + "</h4>"
     
-    htmlElement.innerHTML += "<h4>Reason: <select name='reason' id='reason' required><optgroup label='Reason for request'><option value='"+request.reason+"'>"+request.reason+"</option><option value='Mileage'>Mileage</option><option value='Rental'>Rental</option><option value='Meal'>Meal</option><option value='Airfare'>Airfare</option><option value='Purchase'>Purchase</option></optgroup></select>"
+    htmlElement.innerHTML += "<h4>Reason: <select class='select' name='reason' id='reason' required><optgroup label='Reason for request'><option value='"+request.reason+"'>"+request.reason+"</option><option value='Mileage'>Mileage</option><option value='Rental'>Rental</option><option value='Meal'>Meal</option><option value='Airfare'>Airfare</option><option value='Purchase'>Purchase</option></optgroup></select>"
     htmlElement.innerHTML += "<h4>Comment: <textarea type='text' rows='6' cols='100' id = 'comment' > " + request.comment + "</textarea></h4>"
     htmlElement.innerHTML += "<p>Amount: $<input type='number' id = 'amount' value = '"+request.amount+"'> </p>"
     htmlElement.innerHTML += "<p>Status: "+ request.approved+"</p>"
-    htmlElement.innerHTML += "<button type= 'button' onclick='updateReq()'>All Good! ...Probably this time.</button>   <button type= 'button' onclick='location.href=&quot;userHome.html&quot;'>NO! I DONT WANNA EDIT!!!!</button> "
+    htmlElement.innerHTML += "<button class='btn' type= 'button' onclick='updateReq()'>All Good! ...Probably this time.</button>   <button class='btn' type= 'button' onclick='location.href=&quot;userHome.html&quot;'>NO! I DONT WANNA EDIT!!!!</button> "
 
 }
 async function updateReq(){
