@@ -71,7 +71,7 @@ public class RequestDAOS implements DAOScrud<Requests> {
 public List<Requests> userOnly(Integer users){
     List<Requests> reqList = new LinkedList<>();
     try {
-        String sql = "SELECT * FROM reimburse_req WHERE user_id = ?";
+        String sql = "SELECT * FROM reimburse_req WHERE user_id = ? ORDER BY req_id";
         PreparedStatement pstmt = connection.prepareStatement(sql);
         pstmt.setInt(1, users);
         ResultSet results = pstmt.executeQuery();
@@ -100,7 +100,7 @@ public List<Requests> userOnly(Integer users){
     public List<Requests> readAll() {
         List<Requests> reqList = new LinkedList<>();
         try {
-            String sql = "SELECT * FROM reimburse_req";
+            String sql = "SELECT * FROM reimburse_req ORDER BY req_id";
             PreparedStatement pstmt = connection.prepareStatement(sql);
             ResultSet results = pstmt.executeQuery();
 

@@ -96,7 +96,7 @@ public class UserDAOS implements DAOScrud<User> {
     public List<User> readAll() {
         List<User> userList = new LinkedList<>();
         try {
-            String sql = "SELECT * FROM user_table";
+            String sql = "SELECT * FROM user_table ORDER BY user_id";
 
             PreparedStatement pstmt = connection.prepareStatement(sql);
 

@@ -9,23 +9,28 @@
     <title>User Home</title>
 </head>
 
-<body>
+<body onload = "showRequests()">
     <h2>What can we do for you today?</h2>
     <h2>Please select the option below</h2>
     <button type="button" onclick="changeMeUp()">Edit Profile</button> <div id="profile"></div>
-    <button type="button" onclick="newRequest()" >Create Request</button><br>
+    <button type="button" onclick="newRequest()" >Create Request</button> 
     <input type="text"type="number" onkeypress="return event.charCode >= 48 && event.charCode <= 57" id="EditID" placeholder="Request ID Here For Editing" value="0"> <button type="button" onclick="editReq()" >Edit Request</button>
    <br><input type="text"type="number" onkeypress="return event.charCode >= 48 && event.charCode <= 57" id="DeleteID" placeholder="Request ID Here For Deletion" value="0"> <button type="button" onclick="deleteIt()" >Delete Request</button>
      <br> <br>
     <div id="adminControls"></div>
     <br>
-    <div id="requestList"></div>
-</body>
+    <div id="requestList" ></div>
+</body >
 
 <script>
 let htmlElement=document.getElementById('adminControls')
 if(window.sessionStorage.getItem('admin')== "true"){
+    htmlElement.innerHTML += "<h3>Special Admin Controls</h3> <br> <h4>*USE AT OWN RISK*</h4>"
     htmlElement.innerHTML += "<button  type='button' onclick='location.href=&quot;viewUsers.html&quot;'>View and Update User Status</button> <button  type='button' onclick='location.href=&quot;approveRequests.html&quot;'>Approve/Deny Requests</button>"
+
+htmlElement.innerHTML +=" <br> <br> Sort Requests by <select name='status' id='status' ><optgroup label='Sort by'><option value=' '>Nothing!</option><option value='Pending'>Pending!</option><option value='Approved'>Approved!</option><option value='Denied'>Denied!</option></optgroup></select> <button type='button' onclick='showRequests()' >View Sorted Requests</button>"
+
+
 }
 
 
@@ -83,7 +88,7 @@ if(window.sessionStorage.getItem('admin') == "true"){
 }
 
 
-    (async function showRequests() {
+    async function showRequests() {
         let url = 'http://localhost:8080/IL-p1/request?user-id='+window.sessionStorage.getItem('userID')
     
     let response = await fetch(url, {
@@ -97,6 +102,10 @@ if(window.sessionStorage.getItem('admin') == "true"){
 //get the element where we will place our content
 htmlElement.innerHTML = ' '
 
+if(sessionStorage.getItem('admin')== "true"){
+let sorting = document.getElementById('status').value
+
+if(sorting == " "){
 //This is just looping through an array, exactly the same as Java
 for (let i = 0; i < array.length; i++) {
     let req = array[i];
@@ -113,11 +122,41 @@ for (let i = 0; i < array.length; i++) {
     
     
 
+}}else{
+    for (let i = 0; i < array.length; i++) {
+    let req = array[i];
+
+if(sorting == req.approved){
+    //insert into the web page the data
+    htmlElement.innerHTML += "<h4>Request ID: " + req.reqId + "</h4>"
+    
+    htmlElement.innerHTML += "<h4>Reason: " + req.reason + "</h4>"
+    htmlElement.innerHTML += "<h4>Comment: " + req.comment + "</h4>"
+    htmlElement.innerHTML += "<p>Amount: $" + req.amount + "</p>"
+    htmlElement.innerHTML += "<p>Status: "+ req.approved+"</p><br><br>"}
 }
 
 
     
-})();
+}}else{ for (let i = 0; i < array.length; i++) {
+    let req = array[i];
+
+
+    //insert into the web page the data
+    htmlElement.innerHTML += "<h4>Request ID: " + req.reqId + "</h4>"
+    
+    htmlElement.innerHTML += "<h4>Reason: " + req.reason + "</h4>"
+    htmlElement.innerHTML += "<h4>Comment: " + req.comment + "</h4>"
+    htmlElement.innerHTML += "<p>Amount: $" + req.amount + "</p>"
+    htmlElement.innerHTML += "<p>Status: "+ req.approved+"</p><br><br>"
+
+}
+
+
+
+}}
+
+
 async function deleteIt(){
 
     
