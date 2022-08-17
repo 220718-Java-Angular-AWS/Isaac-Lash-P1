@@ -19,22 +19,24 @@ We want to use this element to add new HTML into the document, the content that 
     <p>(Leave zero if you want to see them all)</p> <br>
 
     <button type=" button" onclick="getUsers()" >Show Them To Me!</button>
+    <div id="UserEdit"></div>
     <div id="userList"></div>
 </body>
 
 <!-- And now the script portion where we can write our javascript code -->
 <script>
-    /* We prepare our API call. This is just like the one in newUserForm.html except it is a GET request and it has no body.
-    We still need to add two parameters to fetch(), the url and the object that has the rest of the message stuff.
+  let htmlElement= document.getElementById("UserEdit")
+  /*if(window.sessionStorage.getItem('admin') == "true"){
 
-    This is also a special kind of function, an IIFE. We will learn more about Imediately Invoked Function Expressions later.
-    Basically it's just a function that gets called as soon as it is declared.
+    htmlElement.innerHTML += "<button type='button' onclick='openUser()'>Change User Permissions</button>"
 
-    This one is also marked "async" which means we can "await" when we need to. Again, we'll discuss that in greater detail later.
+  }*/
 
-    We are also handing off the userId in the parameter list. For now I am hard coding the value of "1" to be sent to this
-    function. That id gets concatinated into the url string, which has a parameter list at the end.
-    */
+async function changeUser(){
+
+
+}
+
     async function getUsers() {
         // url is a server location 
         
@@ -76,7 +78,13 @@ We want to use this element to add new HTML into the document, the content that 
                 htmlElement.innerHTML += "<h4>Last Name: " + user.lastName + "</h4>"
                 htmlElement.innerHTML += "<p>Email: " + user.email + "</p>"
                 htmlElement.innerHTML += "<p>Admin: " + user.admin + "</p><br><br>"
-        
+            if(window.sessionStorage.getItem('admin')== "true" ){
+                
+                htmlElement.innerHTML+= "<select name='administer' id='administer' required><optgroup label='Shall they join the council?'><option value='false'>They shall not obtain the rank of Admin(No)</option><option value='true'>They have earned the rank of Admin(yes)</option></optgroup></select>"
+                htmlElement.innerHTML+="<button type='button' onclick='changeUser()'>Change User Permissions</button>"
+
+            
+            }
         }else{
         //parse the JSON in that response
         let array = await response.json();

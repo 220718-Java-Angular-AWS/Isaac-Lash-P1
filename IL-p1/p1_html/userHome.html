@@ -12,15 +12,22 @@
 <body>
     <h2>What can we do for you today?</h2>
     <h2>Please select the option below</h2>
-    <button type="button" onclick="logMeInCoach()">Edit Profile</button> <button type="button" onclick="showRequests()">View Requests</button><br>
+    <button type="button" onclick="logMeInCoach()">Edit Profile</button> <button type="button" onclick="showRequests()">View Requests</button> 
     <button type="button" onclick="newRequest()" >Create Request</button><br>
-    <input type="text"type="number" onkeypress="return event.charCode >= 48 && event.charCode <= 57" id="EditID" placeholder="Request ID Here" value="0"> <button type="button" onclick="editReq()" >Edit Request</button>
-   <br><input type="text"type="number" onkeypress="return event.charCode >= 48 && event.charCode <= 57" id="DeleteID" placeholder="Request ID Here" value="0"> <button type="button" onclick="deleteIt()" >Delete Request</button>
+    <input type="text"type="number" onkeypress="return event.charCode >= 48 && event.charCode <= 57" id="EditID" placeholder="Request ID Here For Editing" value="0"> <button type="button" onclick="editReq()" >Edit Request</button>
+   <br><input type="text"type="number" onkeypress="return event.charCode >= 48 && event.charCode <= 57" id="DeleteID" placeholder="Request ID Here For Deletion" value="0"> <button type="button" onclick="deleteIt()" >Delete Request</button>
+     <br> <br>
+    <div id="adminControls"></div>
     <br>
     <div id="requestList"></div>
 </body>
 
 <script>
+let htmlElement=document.getElementById('adminControls')
+if(window.sessionStorage.getItem('admin')== "true"){
+    htmlElement.innerHTML += "<button  type='button' onclick='location.href=&quot;viewUsers.html&quot;'>View and Update User Status</button> <button  type='button' onclick='location.href=&quot;approveRequests.html&quot;'>Approve/Deny Requests</button>"
+}
+
     (async function showRequests() {
         let url = 'http://localhost:8080/IL-p1/request?user-id='+window.sessionStorage.getItem('userID')
     

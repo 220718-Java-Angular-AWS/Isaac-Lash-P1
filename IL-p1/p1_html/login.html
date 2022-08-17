@@ -41,13 +41,13 @@ if(user.userId != null){
 window.sessionStorage.setItem('userID', user.userId)
 
 sessionStorage.setItem('admin', user.admin);
+
+
 alert("Welcome " +user.firstName +" " + user.lastName+ "!")
 
-if(user.admin == true){
-    location.href='file:///C:/Users/MLASH/Git-practice/Isaac-Lash-P1/IL-p1/p1_html/adminControls.html'
-}else{
-location.href='file:///C:/Users/MLASH/Git-practice/Isaac-Lash-P1/IL-p1/p1_html/userHome.html'
-}
+
+location.href='userHome.html'
+
 }else{alert("You a dumb, try again.")}
 
 

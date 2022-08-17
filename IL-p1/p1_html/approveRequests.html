@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<!-- This is boilerplate HTML header stuff -->
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
+    <title>Respond to Requests</title>
+</head>
+
+<body>
+    <h3>Hello Admin!</h3>
+    <h3>Time to Administrate</h3>
+    <button type="button" onclick="location.href='userHome.html'">Eh, I don't really feeeeeeel like it (Home)</button> <br> <br> 
+    <input type="number" id="aReqId" onkeypress="return event.charCode >= 48 && event.charCode <= 57" >
+    <button type="button" onclick="displayReq()">View Request</button>
+    <div id="reqQuestion" ></div><br> <br> 
+   
+    <div id="requestList"></div>
+</body>
+
+<script>
+async function displayReq(){
+    let url = 'http://localhost:8080/IL-p1/request?req-id=' + document.getElementById('aReqId').value
+    let response = await fetch(url, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json;charset=utf-8'
+            }
+        });
+        console.log(document.getElementById('aReqId').value)
+        let htmlElement = document.getElementById('reqQuestion');
+    let req= await response.json()
+   
+    if(req.approved == "Pending"){
+    htmlElement.innerHTML += "<h4>Request ID: " + req.reqId + "</h4>"
+    htmlElement.innerHTML += "<h4>User ID: " + req.userId + "</h4>"
+    htmlElement.innerHTML += "<h4>Reason: " + req.reason + "</h4>"
+    htmlElement.innerHTML += "<h4>Comment: " + req.comment + "</h4>"
+    htmlElement.innerHTML += "<p>Amount: $" + req.amount + "</p>"
+    htmlElement.innerHTML += "<p>Status: "+ req.approved+"</p><br><br>"
+    htmlElement.innerHTML +="<select name='reason' id='Choice' required><optgroup label='Their Fate:'> <option value='Denied'> Let them eat cake! (Deny)</option> <option value='Approved'>Bake them a cake! (Approve)</option> </optgroup> </select> <br>"
+    htmlElement.innerHTML +=" <br> <button type ='button' onclick='subChoice()''>Cast Your decision upon the Penniless</button>"
+  
+    }else{alert("Their fate was decided long before now. (Cant edit a request that was already denied/approved)")}
+}
+
+async function subChoice(){
+
+    let url = 'http://localhost:8080/IL-p1/request?req-id=' + document.getElementById('aReqId').value
+    let response = await fetch(url, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json;charset=utf-8'
+            }
+        });
+
+let req = await response.json();
+var decision = document.getElementsByName('Choice');
+              
+    /*        for(i = 0; i <= decision.length-1; i++) {
+                if(decision[i].checked){
+                    let finalDec = decision[i].value
+                }}
+console.log(finalDec)*/
+   let newReq = {
+    "reqId": req.reqId,
+    "userId": req.userId,
+    "comment": req.comment,
+    "reason": req.reason,
+    "amount": req.amount,
+    "approved":document.getElementById('Choice').value
+}
+        console.log(req)
+        console.log(newReq)
+       
+    
+    let urls = 'http://localhost:8080/IL-p1/request'
+    let responses = await fetch(urls, {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json;charset=utf-8'},
+            body: JSON.stringify(newReq)
+            });
+
+if (responses.status== 200){
+    alert('You have decided the fate of their finances and ultimately, their lives.')
+}
+
+
+
+
+}
+
+
+(async function showRequests() {
+        let url = 'http://localhost:8080/IL-p1/request'
+    
+
+
+    let response = await fetch(url, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json;charset=utf-8'
+            }
+        });
+        let array = await response.json();
+        let htmlElement = document.getElementById('requestList');
+//get the element where we will place our content
+htmlElement.innerHTML = ' '
+
+//This is just looping through an array, exactly the same as Java
+for (let i = 0; i < array.length; i++) {
+    let req = array[i];
+
+    if(req.approved == "Pending"){
+    //insert into the web page the data
+    htmlElement.innerHTML += "<h4>Request ID: " + req.reqId + "</h4>"
+    
+    htmlElement.innerHTML += "<h4>Reason: " + req.reason + "</h4>"
+    htmlElement.innerHTML += "<h4>Comment: " + req.comment + "</h4>"
+    htmlElement.innerHTML += "<p>Amount: $" + req.amount + "</p>"
+    htmlElement.innerHTML += "<p>Status: "+ req.approved+"</p><br><br>"
+
+    }
+    
+
+}
+
+
+    
+})();
+
+
+</script>
+</html>
